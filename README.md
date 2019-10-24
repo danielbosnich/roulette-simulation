@@ -1,2 +1,2 @@
 # roulette-simulation
-Simulation of the roulette martingale strategy
+Roulette simulation using a one zero board and the martingale betting strategy
