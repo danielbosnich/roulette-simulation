@@ -85,7 +85,7 @@ def main():
 
         for j in range(num_bets):
             logging.debug("Placing bet # %i in simulation # %i", j, i)
-            # Subtract money for the bets
+            # Subtract money for the bet
             current_bank = current_bank - bet_size
 
             # Simulate a single run of the game
@@ -94,7 +94,7 @@ def main():
             logging.debug('The winning pocket is  %s', winning_pocket)
             logging.debug('The winning color is %s', winning_color)
 
-            # Check if the bets won
+            # Check if the bet won
             if winning_color == color_bet:
                 current_bank = current_bank + bet_size * 2
                 bet_size = starting_bet_size
