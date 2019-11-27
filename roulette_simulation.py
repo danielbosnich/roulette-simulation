@@ -6,7 +6,6 @@ Created on Wed Jun 12 15:58:02 2019
 @author: danielb
 """
 
-# Package imports
 import logging
 import random
 import time
