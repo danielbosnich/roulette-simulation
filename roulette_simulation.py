@@ -1,15 +1,12 @@
 """
 Simulation of the Roulette Martingale Strategy
-
-Created on Wed Jun 12 15:58:02 2019
-
-@author: danielb
 """
 
 import logging
 import random
 import time
 import matplotlib.pyplot as plt
+from matplotlib.ticker import PercentFormatter
 
 # Board constants
 GREEN = 'Green'
@@ -53,39 +50,40 @@ POCKETS = {
     34: RED,
     35: BLACK,
     36: RED
-    }
+}
+
 
 def main():
     """Run the Roulette simulation"""
     # Simulation variables
-    num_plays = 5000
-    num_bets = 20 # Number of bets per simulation
-    bank_start = 5000
-    starting_bet_size = 15
-    bet_size_limit = 1250
-    color_bet = RED
+    num_plays = 10_000
+    num_bets = 25  # Number of bets per play
+    bank_start = 500
+    starting_bet_size = 2
+    bet_size_limit = 100  # Max bet size in Colorado
     wins = 0
     ending_bank_amounts = []
-
-    # Seed the random number generator
-    random.seed()
-
-    # Start time
-    start_time = time.time()
 
     # Start up logging
     logging.basicConfig(format='[%(asctime)s] %(levelname)s : %(message)s',
                         level=logging.INFO)
 
+    # Simulation start time
+    start_time = time.time()
+
+    # Run the simulation
     for i in range(num_plays):
         # Reset the bank and the bet size
         current_bank = bank_start
         bet_size = starting_bet_size
 
         for j in range(num_bets):
-            logging.debug("Placing bet # %i in simulation # %i", j, i)
-            # Subtract money for the bet
-            current_bank = current_bank - bet_size
+            logging.debug('Placing bet # %i in simulation # %i', j, i)
+
+            # Subtract money for the bet (only if there's enough)
+            if current_bank-bet_size < 0:
+                break
+            current_bank -= bet_size
 
             # Simulate a single run of the game
             winning_pocket = random.randint(0, 36)
@@ -94,38 +92,38 @@ def main():
             logging.debug('The winning color is %s', winning_color)
 
             # Check if the bet won
-            if winning_color == color_bet:
+            if winning_color == RED:
                 current_bank = current_bank + bet_size * 2
                 bet_size = starting_bet_size
-                logging.debug("Won. The bank amount is now: %i", current_bank)
+                logging.debug('Won. The bank amount is now: %i', current_bank)
             else:
-                bet_size = bet_size * 2
+                bet_size *= 2
                 if bet_size > bet_size_limit:
                     bet_size = starting_bet_size
-                logging.debug("Lost. The bank amount is now: %i", current_bank)
+                logging.debug('Lost. The bank amount is now: %i', current_bank)
 
-        # Check if we made money or lost money and add bank amount to list
+        # Check if we made money or lost money and add bank amount to the list
         if current_bank > bank_start:
             wins += 1
         ending_bank_amounts.append(current_bank)
 
-
     # Figure out how many times we made money
-    winning_percentage = wins / num_plays * 100
-    logging.info("We made money %.3f percent of the times we played",
-                 winning_percentage)
+    logging.info('We made money %.3f percent of the times we played',
+                 wins/num_plays * 100)
+
+    # Calculate simulation execution time
+    logging.debug('It took the program %.3f seconds to run',
+                  time.time()-start_time)
 
     # Create the histogram
-    plt.hist(ending_bank_amounts, 80)
+    y_axis_weights = [1/len(ending_bank_amounts)] * len(ending_bank_amounts)
+    plt.hist(ending_bank_amounts, bins=75, weights=y_axis_weights)
+    plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
     plt.xlabel('Ending bank amount ($)')
     plt.ylabel('Frequency')
     plt.title('Playing Roulette using the Martingale strategy')
+    plt.gcf().canvas.set_window_title('Roulette Simulation')  # Window title
     plt.show()
-
-    # Calculate program execution time
-    end_time = time.time()
-    execution_time = end_time - start_time
-    logging.debug("It took the program %.3f seconds to run", execution_time)
 
     # Close the logger
     logging.shutdown()
