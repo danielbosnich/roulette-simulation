@@ -2,8 +2,12 @@
 Roulette simulation using a one zero board and the Martingale betting strategy
 
 
+# What is the Martingale strategy?
+This is a common betting strategy for games with two outcomes like flipping a coin or, in this case, betting on red or black in roulette.  This strategy tells the gambler to double the amount bet after every loss until eventually winning, such that the amount won will always equal the original bet.  Of course, the problem with this strategy is that an exceptional string of consecutive losses can quickly bankrupt the gambler.
+
+
 # Does this strategy work?
-The Martingale strategy may sound enticing, but as with all Roulette strategies, it will not make money in the long run.  If the table bet maximum is high enough, this strategy can even make a profit around 90% of the time.  The problem is that the wins (though many) will be small, while the losses will be substantial.
+The Martingale strategy may sound enticing but, as with all roulette strategies, it will not make money in the long run.  If the table bet maximum is high enough, this strategy can even make a profit around 90% of the time.  The problem is that the wins (though many) will be small, while the losses will be substantial.
 
 
 # Usage
