@@ -37,4 +37,4 @@ starting_bet_size = 2
 bet_size_limit = 100  # Max bet size in Colorado
 ```
 
-![Screenshot](https://github.com/danielbosnich/roulette-simulation/blob/master/example_plot.png)
+![Screenshot](https://github.com/danielbosnich/roulette-simulation/blob/main/example_plot.png)
